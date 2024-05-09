@@ -1,0 +1,9 @@
+npm init // node init in the project //package,json file made and this file is described our project
+npm run app.js // run the app in the server 
+npm install express // framework of node js
+npm install -g  nodemon // bar bar node hannu parena hai ta
+cjs(common js) = require(), module.exports
+es(acmascript)= import , export default, export
+
+http method-verbs
+get,post,patch,delete 
