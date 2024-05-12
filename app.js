@@ -1,14 +1,16 @@
 const express = require("express");
 // const app =require('express')()
 const app = express()
-const port = 3001;
+const port = 3000;
+
+app.set("view engine", "ejs")
 
 app.listen(port,()=>{
     console.log(`project has started at port ${port}`);
 })
 app.get('/',(req,res)=>{
-    res.send("<h1> This is home </h1>");
+    res.render('home.ejs');
 })
 app.get('/about',(req,res)=>{
-    res.send("this is about page");
+    res.send("This is about page Aashis");
 })
