@@ -43,3 +43,6 @@ form input[type="submit"] {
 form input[type="submit"]:hover {
     background-color: #555;
 }
+.dont{
+    text-align: center;
+}
