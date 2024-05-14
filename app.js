@@ -5,15 +5,23 @@ const port = 3000;
 
 app.set("view engine", "ejs")
 
+
+
+app.get('/',(req,res)=>{
+
+    res.render('home.ejs');// address:address
+
+})
+
+app.get('/login',(req,res)=>{
+    res.render('auth/login.ejs');
+})
+app.get('/register',(req,res)=>{
+    res.render('auth/register.ejs');
+})
+
+app.use(express.static('public/css'));
+
 app.listen(port,()=>{
     console.log(`project has started at port ${port}`);
-})
-app.get('/',(req,res)=>{
-    const name = "Aashis Rijal";
-    const address = "Nuwakot";
-    res.render('home.ejs',{name,address});// address:address
-    console.log("all is good")
-})
-app.get('/about',(req,res)=>{
-    res.render('about.ejs');
 })
