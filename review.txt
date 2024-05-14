@@ -9,3 +9,4 @@ http method-verbs
 get,post,patch,delete 
 
 templating engine (ejs-embedded javascript) // for rendering frontend in theough backenf
+ejs dynamic <%- 1+1 %>

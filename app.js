@@ -9,8 +9,11 @@ app.listen(port,()=>{
     console.log(`project has started at port ${port}`);
 })
 app.get('/',(req,res)=>{
-    res.render('home.ejs');
+    const name = "Aashis Rijal";
+    const address = "Nuwakot";
+    res.render('home.ejs',{name,address});// address:address
+    console.log("all is good")
 })
 app.get('/about',(req,res)=>{
-    res.send("This is about page Aashis");
+    res.render('about.ejs');
 })
