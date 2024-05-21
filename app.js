@@ -2,6 +2,7 @@ const express = require("express");
 // const app =require('express')()
 const app = express()
 const port = 3000;
+require("./model/index.js")
 
 app.set("view engine", "ejs")
 
