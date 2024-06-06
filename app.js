@@ -1,8 +1,8 @@
 const express = require("express");
+const app = express()
 const { blogs, users } = require("./model/index.js");
 const bcrypt = require('bcrypt');
 // const app =require('express')()
-const app = express()
 const port = 3000;
 require("./model/index.js");
 
