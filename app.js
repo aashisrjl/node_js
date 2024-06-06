@@ -1,5 +1,6 @@
 const express = require("express");
 const { blogs, users } = require("./model/index.js");
+const bcrypt = require('bcrypt');
 // const app =require('express')()
 const app = express()
 const port = 3000;
@@ -32,7 +33,7 @@ app.post('/register', async(req,res)=>{
     await users.create({
         username:username,
         email:email,
-        password:password
+        password:bcrypt.hashSync(password,10)
     });
     res.send('Registered successfully');
 
@@ -42,6 +43,7 @@ app.post('/register', async(req,res)=>{
 //     res.json({
 //         data
 //     })
+    
 // })
 
 app.post('/blog', async(req,res)=>{
