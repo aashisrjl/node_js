@@ -47,3 +47,11 @@ form input[type="submit"]:hover {
     text-align: center;
     margin-left: 10px;
 }
+.image-preview {
+    display: none;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 10px;
+}

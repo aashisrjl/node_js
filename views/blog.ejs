@@ -8,8 +8,10 @@
 </head>
 <body>
     <%- include("components/navbar.ejs") %>
-   <form action="/blog" method="POST">
+   <form action="/blog" method="POST" enctype="multipart/form-data">
     <h2 style="text-align: center; padding: 10px;">Create your blog </h2>
+    <input type="file" name="image" placeholder="photo">
+    <img id="imgPreview" class="image-preview" src="" alt="Image Preview">
     <input type="text" name="title" placeholder="Title">
     <input type="text" name="subtitle" placeholder="subtitle">
     <input type="textarea" name="description" placeholder="desc">
