@@ -1,13 +1,15 @@
 const express = require("express");
 const app = express();
 
+const jwt = require("jsonwebtoken")
+
 //require the database table to perform database operation
 const { blogs, users } = require("./model/index.js");
 
 // require bcrypt which is used to hashed the password (bcrypt.hashSync(password,10))
 const bcrypt = require('bcrypt');
 
-const port = 3000;
+const port = process.env.PORT || 3001;
 require("./model/index.js");
 
 // setup for file upload in the database
@@ -47,9 +49,13 @@ app.post('/login',async(req,res)=>{
     })
     if(data){
         // check password
-       const isMatch = await bcrypt.compareSync(password,data.password);
+       const isMatch = await bcrypt.compare(password,data.password);
         if(isMatch){
-            res.render("blog.ejs"+err);
+          const token =  jwt.sign({id:data.id},'aashish',{
+                expiresIn: "30d"
+            })
+            res.cookie("jwtToken",token)
+            res.render("blog.ejs");
             }else{
                 res.send("password is incorrect");
                 }
@@ -95,7 +101,7 @@ await blogs.create({
     subtitle,
     description
 })
-res.json({
+res.status(201).json({
     msg:"Created Successfully"
 });
 })
