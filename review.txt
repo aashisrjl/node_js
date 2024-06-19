@@ -8,5 +8,5 @@ es(ecmascript)= import , export default, export
 http method-verbs
 get,post,patch,delete 
 
-templating engine (ejs-embedded javascript) // for rendering frontend in theough backenf
+templating engine (ejs-embedded javascript) // for rendering frontend in through backend 
 ejs dynamic <%- 1+1 %>
