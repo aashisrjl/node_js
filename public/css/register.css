@@ -55,3 +55,7 @@ form input[type="submit"]:hover {
     object-fit: cover;
     margin: 0 auto 10px;
 }
+#imgInput{
+padding: 10px;
+margin-left: 5px;
+}
