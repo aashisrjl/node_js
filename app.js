@@ -22,8 +22,11 @@ const upload = multer({storage:storage});
 
 // react router and controllers
 const authRoute = require("./routes/authRoute");
+const questionRoute = require("./routes/questionRoute");
 const { renderRegisterPage, renderBlogPage, renderLoginPage, handleLogin, handleRegister, handleBlog, renderHomePage } = require("./controllers/authController.js");
+const { renderAskQuestionPage, askQuestion } = require("./controllers/questionController.js");
 app.use("/",authRoute)
+app.use("/",questionRoute)
 
 // set view engine to the ejs where all the ejs file under views folder have access to the ejs 
 app.set("view engine", "ejs");
@@ -52,6 +55,10 @@ app.post('/register', handleRegister)
 
 //BLOG POST 
 app.post('/blog', upload.single('image'), handleBlog)
+
+// for question and answer portion
+app.get('/askquestion',renderAskQuestionPage)
+app.post('/askquestion',upload.single('image'),askQuestion)
 
 //give access the css folder to the node js 
 app.use(express.static('public/css'));
