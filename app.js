@@ -8,6 +8,8 @@ const { blogs, users } = require("./model/index.js");
 
 // require bcrypt which is used to hashed the password (bcrypt.hashSync(password,10))
 const bcrypt = require('bcrypt');
+const cookies = require('cookie-parser')
+app.use(cookies())
 
 const port = 3000;
 // accessing database
@@ -25,6 +27,7 @@ const authRoute = require("./routes/authRoute");
 const questionRoute = require("./routes/questionRoute");
 const { renderRegisterPage, renderBlogPage, renderLoginPage, handleLogin, handleRegister, handleBlog, renderHomePage } = require("./controllers/authController.js");
 const { renderAskQuestionPage, askQuestion } = require("./controllers/questionController.js");
+const { isAuthenticated } = require("./middleware/isAuthenticated.js");
 app.use("/",authRoute)
 app.use("/",questionRoute)
 
@@ -58,7 +61,7 @@ app.post('/blog', upload.single('image'), handleBlog)
 
 // for question and answer portion
 app.get('/askquestion',renderAskQuestionPage)
-app.post('/askquestion',upload.single('image'),askQuestion)
+app.post('/askquestion',isAuthenticated,upload.single('image'),askQuestion)
 
 //give access the css folder to the node js 
 app.use(express.static('public/css'));
