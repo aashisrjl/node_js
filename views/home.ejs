@@ -10,7 +10,7 @@
 <body>
     <%- include("components/navbar") %>
 
-    <div class="card-container">
+    <div class="card-container" onclick="location.href='/question/detail' ">
        <% data.forEach((item)=>{ %>
             <div class="card">
                 <h2><%- item.title  %></h2>

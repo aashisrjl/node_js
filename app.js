@@ -26,7 +26,7 @@ const upload = multer({storage:storage});
 const authRoute = require("./routes/authRoute");
 const questionRoute = require("./routes/questionRoute");
 const { renderRegisterPage, renderBlogPage, renderLoginPage, handleLogin, handleRegister, handleBlog, renderHomePage } = require("./controllers/authController.js");
-const { renderAskQuestionPage, askQuestion } = require("./controllers/questionController.js");
+const { renderAskQuestionPage, askQuestion,  renderQuestionDetailPage } = require("./controllers/questionController.js");
 const { isAuthenticated } = require("./middleware/isAuthenticated.js");
 app.use("/",authRoute)
 app.use("/",questionRoute)
@@ -63,8 +63,12 @@ app.post('/blog', upload.single('image'), handleBlog)
 app.get('/askquestion',renderAskQuestionPage)
 app.post('/askquestion',isAuthenticated,upload.single('image'),askQuestion)
 
+
+app.get('/question/detail',renderQuestionDetailPage)
+
 //give access the css folder to the node js 
 app.use(express.static('public/css'));
+app.use(express.static('storage/'));
 
 //allocate port number to the server 
 app.listen(port,()=>{

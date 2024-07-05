@@ -34,3 +34,6 @@ exports.askAllQuestion = async(req,res)=>{
         ]
     })
 }
+exports.renderQuestionDetailPage = (req,res)=>{
+    res.render('question/questionDetail.ejs');
+}
