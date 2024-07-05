@@ -1,4 +1,4 @@
-const { users, blogs } = require("../model");
+const { users, blogs, questions } = require("../model");
 // require bcrypt which is used to hashed the password (bcrypt.hashSync(password,10))
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
@@ -9,8 +9,16 @@ const jwt = require("jsonwebtoken")
 // const upload = multer({storage:storage});
 
 //home
-exports.renderHomePage = (req,res)=>{
-    res.render("home.ejs");
+exports.renderHomePage = async(req,res)=>{
+    const data = await questions.findAll(
+        {
+        include:[{
+            model: users,
+            attributes: ["username"] // this defines the credential to pass the data to the frontend
+        }]
+     }
+    )// return array because it fins all 
+    res.render("home.ejs",{data:data});
 }
 
 //login 
