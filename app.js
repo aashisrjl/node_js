@@ -3,6 +3,7 @@ const app = express();
 
 const jwt = require("jsonwebtoken")
 
+
 //require the database table to perform database operation
 const { blogs, users } = require("./model/index.js");
 
@@ -28,6 +29,7 @@ const questionRoute = require("./routes/questionRoute");
 const { renderRegisterPage, renderBlogPage, renderLoginPage, handleLogin, handleRegister, handleBlog, renderHomePage } = require("./controllers/authController.js");
 const { renderAskQuestionPage, askQuestion,  renderQuestionDetailPage } = require("./controllers/questionController.js");
 const { isAuthenticated } = require("./middleware/isAuthenticated.js");
+const { promisify } = require("util");
 app.use("/",authRoute)
 app.use("/",questionRoute)
 
@@ -64,11 +66,32 @@ app.get('/askquestion',renderAskQuestionPage)
 app.post('/askquestion',isAuthenticated,upload.single('image'),askQuestion)
 
 
-app.get('/question/detail',renderQuestionDetailPage)
+app.get('/question/:id',renderQuestionDetailPage)
 
 //give access the css folder to the node js 
 app.use(express.static('public/css'));
-app.use(express.static('storage/'));
+app.use(express.static('./storage/'));
+
+// for dynamic navbar
+// app.use(async(req,res,next)=>{
+//     try {
+//         const token = req.cookies.jwtToken;
+//     const decryptedResult = await promisify(jwt.verify)(token,'aashish'); 
+//     if(decryptedResult){
+//         res.locals.isAuthenticated = true
+//     }else{
+//         res.locals.isAuthenticated = false
+//     }
+//     next()
+    
+        
+//     } catch (error) {
+//         res.locals.isAuthenticated = false
+//         console.log(error)
+//         next()
+        
+//     }
+// })
 
 //allocate port number to the server 
 app.listen(port,()=>{

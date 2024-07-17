@@ -25,15 +25,29 @@ exports.askQuestion=async (req,res)=>{
 
 }
 
-exports.askAllQuestion = async(req,res)=>{
+
+// exports.askAllQuestion = async(req,res)=>{
+//     const data = await questions.findAll({
+//         include:[
+//             {
+//             model: users
+//             }
+//         ]
+//     })
+// }
+exports.renderQuestionDetailPage = async(req,res)=>{
+    const id = req.params.id;
     const data = await questions.findAll({
+        where:{
+            id:id
+        },
         include:[
             {
-            model: users
+            model: users,
+            attributes:["username"]
             }
         ]
     })
-}
-exports.renderQuestionDetailPage = (req,res)=>{
-    res.render('question/questionDetail.ejs');
+    console.log(data)
+    res.render('question/questionDetail.ejs',{data});
 }

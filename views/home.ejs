@@ -10,9 +10,9 @@
 <body>
     <%- include("components/navbar") %>
 
-    <div class="card-container" onclick="location.href='/question/detail' ">
+    <div class="card-container">
        <% data.forEach((item)=>{ %>
-            <div class="card">
+            <div class="card" onclick="location.href='/question/<%-item.id%>' ">
                 <h2><%- item.title  %></h2>
                 <p>Author :<%- item.user.username %> </p>
             </div>
