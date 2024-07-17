@@ -70,6 +70,7 @@ exports.handleRegister = async(req,res)=>{
     if(!username || !email || !password){
         return res.send("please provide valid data");
         }
+
    await users.create({
         username:username,
         email:email,

@@ -1,10 +1,11 @@
 const { questions, users } = require("../model")
 
-
+//get question asking form
 exports.renderAskQuestionPage = (req,res)=>{
     res.render('question/askQuestion.ejs')
 }
 
+// post question
 exports.askQuestion=async (req,res)=>{
     const {title,description} = req.body
     console.log(req.body)
@@ -35,6 +36,7 @@ exports.askQuestion=async (req,res)=>{
 //         ]
 //     })
 // }
+// render single page of question
 exports.renderQuestionDetailPage = async(req,res)=>{
     const id = req.params.id;
     const data = await questions.findAll({
@@ -48,6 +50,6 @@ exports.renderQuestionDetailPage = async(req,res)=>{
             }
         ]
     })
-    console.log(data)
+    console.log(data[0])
     res.render('question/questionDetail.ejs',{data});
 }
