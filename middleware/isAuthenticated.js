@@ -4,7 +4,8 @@ const { users } = require('../model');
 
 
 exports.isAuthenticated = async(req,res,next)=>{
-    const token = req.cookies.jwtToken;
+    try {
+        const token = req.cookies.jwtToken;
     if(!token || token === null || token === undefined){
         return res.redirect('/login')
     }
@@ -13,8 +14,11 @@ exports.isAuthenticated = async(req,res,next)=>{
     const data = await users.findByPk(decryptedResult.id)
     if(!data){
         console.log("not found")
+        res.redirect("/login")
     }
     req.userId = data.id
     next()
-    // hello how are you
+    } catch (error) {
+        console.log(error)
+    }
 }

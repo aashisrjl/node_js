@@ -1,7 +1,8 @@
 const { users, blogs, questions } = require("../model");
 // require bcrypt which is used to hashed the password (bcrypt.hashSync(password,10))
 const bcrypt = require('bcrypt');
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const sendEmail = require("../util/sendEmail");
 
 // setup for file upload in the database
 // const fs = require('fs');
@@ -94,4 +95,27 @@ exports.handleBlog = async(req,res)=>{
     res.status(201).json({
         msg:"Created Successfully"
     });
+    }
+
+    exports.renderForgotPasswordPage = async(req,res)=>{
+        res.render("./auth/forgotPassword.ejs");
+    } 
+
+    exports.handleForgotPassword = async(req,res)=>{
+        const {email} = req.body;
+        const otp = Math.floor(Math.random()*1000,9999)
+
+        //send that otp to above email
+        sendEmail(
+            {
+                email,
+                subject:"your reset password OTP",
+                text: `your otp is : ${otp}`
+            }
+        )
+        res.redirect("/otpPage/");
+    } 
+
+    exports.renderOtpPage = (req,res)=>{
+        res.render('./auth/verifyOtp.ejs');
     }
