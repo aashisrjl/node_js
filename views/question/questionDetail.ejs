@@ -18,7 +18,19 @@
                 </div>
                 <h1>Title: <%- data[0].title %></h1>
                 <h3>Description: <%- data[0].description %></h3>
-                <p>Author :<%- data[0].user.username %> </p>
+                <p>Author :<%- data[0].user.username %> </p><br>
+                <i>Posted On: <%- new Date(data[0].createdAt).toLocaleDateString() %></i>
+            </div>
+            <div class="answer">
+                <% ans.forEach((answer)=>{%>
+                    <div class="card ans-card">
+                        <h2 style="text-decoration: underline;" class="bold">Answer</h2>
+                        <h3 class="bold"><%- answer.answerText %> </h3><br>
+                        <i class="bold">Posted On: <%- new Date(answer.createdAt).toLocaleDateString() %></i>
+                        <i class="ans-user bold">Answered By: <%- answer.user.username %></i>
+                        </div>
+                        <% })%>
+
             </div>
             <div class="answer_section">
                 <form action="/answer/<%-data[0].id %>" method="post">

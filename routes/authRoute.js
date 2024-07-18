@@ -10,4 +10,6 @@ router.route("").get(renderHomePage)
 router.route('/register').post(handleRegister).get(renderRegisterPage)
 router.route('/login').post(handleLogin).get(renderLoginPage)
 router.route('/blog').post(upload.single('image'),handleBlog).get(renderBlogPage)
+
+router.route('/logout').get(renderLoginPage)
 module.exports = router

@@ -1,12 +1,13 @@
-<nav>
+<nav style="position: sticky; top: 0;">
     <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/blog">Blog</a></li>
-        <li><a href="/login">Logout</a></li>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/register">Register</a></li>
-         
-
-      
+       <% if(isAuthenticated){ %>
+            <li><a href="/logout">Logout</a></li>
+       <% }else{ %>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>  
+       <% } %>
+        
     </ul>
 </nav>

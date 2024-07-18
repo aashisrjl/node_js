@@ -1,4 +1,4 @@
-const { questions, users } = require("../model")
+const { questions, users, answers } = require("../model")
 
 //get question asking form
 exports.renderAskQuestionPage = (req,res)=>{
@@ -50,6 +50,15 @@ exports.renderQuestionDetailPage = async(req,res)=>{
             }
         ]
     })
-    console.log(data[0])
-    res.render('question/questionDetail.ejs',{data});
+   const ans = await answers.findAll({
+    where:{
+        questionId:id
+    },include:[
+        {
+            model:users,
+            attributes:["username"]
+        }
+    ]
+   })
+    res.render('question/questionDetail.ejs',{data,ans});
 }

@@ -57,3 +57,18 @@ nav ul li a {
     color: #555;
     margin: 0;
 }
+.answer{
+    width: 800px;
+}
+.ans-card{
+    width: 800px !important;
+    
+}
+.ans-user{
+    float: right;
+}
+.bold{
+    font-weight: bold;
+    font-style: italic;
+    font-family: cursive;
+}

@@ -32,6 +32,21 @@ require("./model/index.js");
 // const fs = require('fs');
 // const {multer,storage}= require('./middleware/multerConfig.js');
 // const upload = multer({storage:storage});
+// for dynamic navbar
+app.use(async (req,res,next)=>{
+    const token =  req.cookies.jwtToken 
+   try {
+     const decryptedResult =  await promisify(jwt.verify)(token,'aashish')
+     if(decryptedResult){
+         res.locals.isAuthenticated = true 
+     }else{
+          res.locals.isAuthenticated = false 
+     }
+   } catch (error) {
+     res.locals.isAuthenticated = false 
+   }
+    next()
+ })
 
 
 // react router and controllers
@@ -41,14 +56,6 @@ const answerRoute = require("./routes/answerRoute");
 app.use("",authRoute)
 app.use("",questionRoute)
 app.use("",answerRoute)
-
-
-
-// Middleware to log req.body for debugging
-app.use((req, res, next) => {
-    console.log('Request Body:', req.body);
-    next();
-});
 
 // //HOME GET
 // app.get('/',renderHomePage)
@@ -82,26 +89,7 @@ app.use((req, res, next) => {
 app.use(express.static('public/css'));
 app.use(express.static('./storage/'));
 
-// for dynamic navbar
-// app.use(async(req,res,next)=>{
-//     try {
-//         const token = req.cookies.jwtToken;
-//     const decryptedResult = await promisify(jwt.verify)(token,'aashish'); 
-//     if(decryptedResult){
-//         res.locals.isAuthenticated = true
-//     }else{
-//         res.locals.isAuthenticated = false
-//     }
-//     next()
-    
-        
-//     } catch (error) {
-//         res.locals.isAuthenticated = false
-//         console.log(error)
-//         next()
-        
-//     }
-// })
+
 
 //allocate port number to the server 
 app.listen(port,()=>{
