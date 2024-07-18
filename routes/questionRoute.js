@@ -7,10 +7,10 @@ const upload = multer({storage:storage});
 
 const router = require('express').Router()
 router.route('/askquestion').get(isAuthenticated,renderAskQuestionPage).post(upload.single('image'),isAuthenticated,askQuestion)
-router.route("/question/:id").get(renderQuestionDetailPage)
+router.route("/question/:id").get(isAuthenticated,renderQuestionDetailPage)
+
 
 module.exports = router
-
 
 
 

@@ -19,13 +19,15 @@
                 <h1>Title: <%- data[0].title %></h1>
                 <h3>Description: <%- data[0].description %></h3>
                 <p>Author :<%- data[0].user.username %> </p>
-                
-                
             </div>
-      
-
-
-        <!-- Add more cards as needed -->
+            <div class="answer_section">
+                <form action="/answer/<%-data[0].id %>" method="post">
+                    <textarea name="answerText" id="" cols="100" rows="10"></textarea>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        
     </div>
+   
 </body>
 </html>

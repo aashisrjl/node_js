@@ -37,8 +37,10 @@ require("./model/index.js");
 // react router and controllers
 const authRoute = require("./routes/authRoute");
 const questionRoute = require("./routes/questionRoute");
+const answerRoute = require("./routes/answerRoute");
 app.use("",authRoute)
 app.use("",questionRoute)
+app.use("",answerRoute)
 
 
 
