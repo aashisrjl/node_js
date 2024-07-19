@@ -77,6 +77,12 @@ exports.handleRegister = async(req,res)=>{
         email:email,
         password:bcrypt.hashSync(password,10)
     });
+    sendEmail({
+        email,
+        subject: "Registered Successfully",
+        text: `Dear ${username}
+        You are registered to the nasaHacking Community`
+    })
     res.status(200).render("auth/login.ejs");
 
 }
@@ -103,19 +109,66 @@ exports.handleBlog = async(req,res)=>{
 
     exports.handleForgotPassword = async(req,res)=>{
         const {email} = req.body;
-        const otp = Math.floor(Math.random()*1000,9999)
-
+        const data = await users.findAll({
+            where:{
+                email
+            }
+        })
+        if(!data.length ===0){
+            return res.send("No user found with this email")
+        }
+        const otp = Math.floor(Math.random()*1000)+9999;
+        res.locals.otp = otp
         //send that otp to above email
         sendEmail(
             {
                 email,
-                subject:"your reset password OTP",
+                subject:"Verification OTP code",
                 text: `your otp is : ${otp}`
             }
         )
-        res.redirect("/otpPage/");
+        data[0].otp = otp
+        await data[0].save();
+        res.redirect("/verifyOtp/");
     } 
 
     exports.renderOtpPage = (req,res)=>{
         res.render('./auth/verifyOtp.ejs');
+    }
+
+    exports.handleVerifyOtp = async(req,res)=>{
+        // const userId = req.userId
+        const {otp} = req.body
+        const data = await users.findAll({
+            where:{
+                otp
+            }
+        })
+        if(!data.length ===0){
+            return res.send("No user found with this otp")
+            }
+            res.redirect(`/resetPassword/${otp}`);
+    }
+    exports.renderResetPasswordPage = (req,res)=>{
+        res.render('./auth/resetPassword.ejs');
+    }
+    exports.handleResetPassword = async(req,res)=>{
+        const otp= req.params.id
+        const {password,confirmPassword} = req.body
+        if(!password || !confirmPassword){
+            return res.send("Please enter password and confirm password")
+        }
+        if(password != confirmPassword){
+            return res.send("Password and confirm password does not match")
+        }
+        const data = await users.update({
+            password,
+            where:{
+                otp
+                }
+                })
+                if(!data.length ===0){
+                    return res.send("No user found with this otp")
+                    }
+
     }

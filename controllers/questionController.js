@@ -9,7 +9,12 @@ exports.renderAskQuestionPage = (req,res)=>{
 exports.askQuestion=async (req,res)=>{
     const {title,description} = req.body
     console.log(req.body)
-    const fileName = req.file.filename
+    let fileName;
+    if(req.file){
+     fileName = req.file.filename
+    }else{
+        fileName = ""
+    }
     console.log(req.file)
     const userId = req.userId
 
