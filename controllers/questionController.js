@@ -65,5 +65,5 @@ exports.renderQuestionDetailPage = async(req,res)=>{
         }
     ]
    })
-    res.render('question/questionDetail.ejs',{data,ans});
+    res.render('question/questionDetail.ejs',{data,ans,loggedInName:req.userName});
 }

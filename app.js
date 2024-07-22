@@ -90,6 +90,7 @@ app.use("",answerRoute)
 
 //give access the css folder to the node js 
 app.use(express.static('public/css'));
+app.use(express.static('public/img/'));
 app.use(express.static('./storage/'));
 
 

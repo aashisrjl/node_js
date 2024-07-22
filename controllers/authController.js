@@ -147,19 +147,22 @@ exports.handleBlog = async(req,res)=>{
         await data[0].save();
         },1000*60)
     
-        res.redirect("/verifyOtp/");
+        res.redirect("/verifyOtp/"+email);
     } 
 
     exports.renderOtpPage = (req,res)=>{
-        res.render('./auth/verifyOtp.ejs');
+        const email = req.query.email
+        res.render('./auth/verifyOtp.ejs',{email:email});
     }
 
     exports.handleVerifyOtp = async(req,res)=>{
         // const userId = req.userId
         const {user_otp} = req.body
+        const {email} = req.query
         const data = await users.findAll({
             where:{
-                otp: user_otp
+                otp: user_otp,
+                email
             }
         })
         if(data.length ===0){
@@ -185,14 +188,11 @@ exports.handleBlog = async(req,res)=>{
         const data = await users.findAll({
             where:{
                 otp: user_otp
+                
             }
         })
         data[0].password = bcrypt.hashSync(password,10)
         await data[0].save();
-       
-        
-
-
         res.redirect("/login");
                 if(data.length ===0){
                     return res.send("No user found with this otp")
