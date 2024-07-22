@@ -8,7 +8,7 @@ const sendEmail = async(data)=>{
         }
     })
     const mailOption={
-        from : "hackingCommunityOfNasa.com",
+        from : "Nodejs_Project",
         to: data.email,
         subject: data.subject,
         text: data.text

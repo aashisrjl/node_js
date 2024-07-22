@@ -26,8 +26,13 @@
                     <div class="card ans-card">
                         <h2 style="text-decoration: underline;" class="bold">Answer</h2>
                         <h3 class="bold"><%- answer.answerText %> </h3><br>
+                        <div>
                         <i class="bold">Posted On: <%- new Date(answer.createdAt).toLocaleDateString() %></i>
                         <i class="ans-user bold">Answered By: <%- answer.user.username %></i>
+                        </div>
+                       
+                            <input class="delete_btn" type="button" onclick="location.href='/deleteAnswer/<%-answer.id%>' " value="delete">
+                            <input class="edit_btn" type="button" onclick="location.href='/answerEdit/<%-answer.id%>' " value="edit">
                         </div>
                         <% })%>
 

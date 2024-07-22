@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const jwt = require("jsonwebtoken")
 // accessing database
 require("./model/index.js");

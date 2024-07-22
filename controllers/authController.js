@@ -55,7 +55,7 @@ exports.handleLogin = async(req,res)=>{
                 expiresIn: "30d"
             })
             res.cookie("jwtToken",token)
-            res.render("blog.ejs");
+            res.redirect("/");
             }else{
                 res.send("password is incorrect");
                 }
@@ -65,6 +65,11 @@ exports.handleLogin = async(req,res)=>{
     }
 
 }
+//handle logout
+exports.handleLogout = (req,res)=>{
+    res.clearCookie("jwtToken");
+    res.redirect("/login");
+    }
 //handle Register
 exports.handleRegister = async(req,res)=>{
     const {username,email,password} = req.body;
@@ -81,11 +86,12 @@ exports.handleRegister = async(req,res)=>{
         email,
         subject: "Registered Successfully",
         text: `Dear ${username}
-        You are registered to the nasaHacking Community`
+        you are new member of the project`
     })
     res.status(200).render("auth/login.ejs");
 
 }
+
 
 //handle blog
 exports.handleBlog = async(req,res)=>{
@@ -114,11 +120,15 @@ exports.handleBlog = async(req,res)=>{
                 email
             }
         })
-        if(!data.length ===0){
-            return res.send("No user found with this email")
+        
+        if(data[0].email != email){
+            return res.send("please provide valid data");
         }
+        
+        
+        //otp mathi assign garya xu
         const otp = Math.floor(Math.random()*1000)+9999;
-        res.locals.otp = otp
+        // res.locals.otp = otp
         //send that otp to above email
         sendEmail(
             {
@@ -129,6 +139,14 @@ exports.handleBlog = async(req,res)=>{
         )
         data[0].otp = otp
         await data[0].save();
+
+         // set time for otp
+        
+         setTimeout(async ()=>{
+            data[0].otp = null
+        await data[0].save();
+        },1000*60)
+    
         res.redirect("/verifyOtp/");
     } 
 
@@ -138,22 +156,24 @@ exports.handleBlog = async(req,res)=>{
 
     exports.handleVerifyOtp = async(req,res)=>{
         // const userId = req.userId
-        const {otp} = req.body
+        const {user_otp} = req.body
         const data = await users.findAll({
             where:{
-                otp
+                otp: user_otp
             }
         })
-        if(!data.length ===0){
+        if(data.length ===0){
             return res.send("No user found with this otp")
             }
-            res.redirect(`/resetPassword/${otp}`);
+            res.redirect(`/resetPassword/${user_otp}`);
     }
     exports.renderResetPasswordPage = (req,res)=>{
-        res.render('./auth/resetPassword.ejs');
+        const user_otp = req.params.id
+        res.render('./auth/resetPassword.ejs',{user_otp});
     }
     exports.handleResetPassword = async(req,res)=>{
-        const otp= req.params.id
+        const user_otp= req.params.id
+        console.log(user_otp)
         const {password,confirmPassword} = req.body
         if(!password || !confirmPassword){
             return res.send("Please enter password and confirm password")
@@ -161,13 +181,20 @@ exports.handleBlog = async(req,res)=>{
         if(password != confirmPassword){
             return res.send("Password and confirm password does not match")
         }
-        const data = await users.update({
-            password,
+        
+        const data = await users.findAll({
             where:{
-                otp
-                }
-                })
-                if(!data.length ===0){
+                otp: user_otp
+            }
+        })
+        data[0].password = bcrypt.hashSync(password,10)
+        await data[0].save();
+       
+        
+
+
+        res.redirect("/login");
+                if(data.length ===0){
                     return res.send("No user found with this otp")
                     }
 
