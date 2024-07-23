@@ -147,36 +147,38 @@ exports.handleBlog = async(req,res)=>{
         await data[0].save();
         },1000*60)
     
-        res.redirect("/verifyOtp/"+email);
+        res.redirect(`/verifyOtp?email=${email}`);
     } 
 
     exports.renderOtpPage = (req,res)=>{
         const email = req.query.email
-        res.render('./auth/verifyOtp.ejs',{email:email});
+        console.log("email",email)
+        res.render('./auth/verifyOtp.ejs',{email});
     }
 
     exports.handleVerifyOtp = async(req,res)=>{
         // const userId = req.userId
-        const {user_otp} = req.body
-        const {email} = req.query
+        const {otp} = req.body
+        const email = req.params.email
         const data = await users.findAll({
             where:{
-                otp: user_otp,
+                otp: otp,
                 email
             }
         })
         if(data.length ===0){
             return res.send("No user found with this otp")
             }
-            res.redirect(`/resetPassword/${user_otp}`);
+            res.redirect(`/resetPassword?email=${email}&otp=${otp}`);
     }
     exports.renderResetPasswordPage = (req,res)=>{
-        const user_otp = req.params.id
-        res.render('./auth/resetPassword.ejs',{user_otp});
+        const {email,otp} = req.query
+        console.log(email,otp)
+        res.render('./auth/resetPassword.ejs',{email,otp});
     }
     exports.handleResetPassword = async(req,res)=>{
-        const user_otp= req.params.id
-        console.log(user_otp)
+        const {email,otp} = req.params
+        console.log(otp)
         const {password,confirmPassword} = req.body
         if(!password || !confirmPassword){
             return res.send("Please enter password and confirm password")
@@ -187,15 +189,16 @@ exports.handleBlog = async(req,res)=>{
         
         const data = await users.findAll({
             where:{
-                otp: user_otp
+                otp: otp,
+                email
                 
             }
         })
+        if(data.length ===0){
+            return res.send("OTP expired")
+        }
         data[0].password = bcrypt.hashSync(password,10)
         await data[0].save();
         res.redirect("/login");
-                if(data.length ===0){
-                    return res.send("No user found with this otp")
-                    }
 
     }

@@ -4,7 +4,7 @@ body {
     padding: 0;
 }
 nav {
-    background-color: #333;
+    background-color: #168AAD;
     color: #fff;
     padding: 20px 20px;
 }
@@ -37,7 +37,6 @@ nav ul li a {
 }
 
 .card {
-    background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -45,7 +44,7 @@ nav ul li a {
     padding: 20px;
     box-sizing: border-box;
     width: 100%;
-    background-color:#fdf9f9;
+    background-color:#45797a;
 
 }
 

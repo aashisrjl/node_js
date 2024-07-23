@@ -13,9 +13,11 @@ router.route('/login').post(handleLogin).get(renderLoginPage)
 router.route('/blog').post(upload.single('image'),handleBlog).get(renderBlogPage)
 
 router.route('/forgotPassword').get(renderForgotPasswordPage).post(handleForgotPassword)
-router.route('/verifyOtp').get(renderOtpPage).post(handleVerifyOtp)
+router.route('/verifyOtp').get(renderOtpPage)
+router.route('/verifyOtp/:email').post(handleVerifyOtp)
 
-router.route('/resetPassword/:id').get(renderResetPasswordPage).post(handleResetPassword)
+router.route('/resetPassword').get(renderResetPasswordPage)
+router.route('/resetPassword/:email/:otp').post(handleResetPassword)
 
 router.route('/logout').get(handleLogout)
 module.exports = router
