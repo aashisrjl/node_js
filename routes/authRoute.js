@@ -5,12 +5,13 @@ const router = require('express').Router()
 const fs = require('fs');
 const {multer,storage}= require('../middleware/multerConfig');
 const { isAuthenticated } = require('../middleware/isAuthenticated');
+const { errorHandler } = require('../services/catchAsyncError');
 const upload = multer({storage:storage});
 
-router.route("").get(renderHomePage)
-router.route('/register').post(handleRegister).get(renderRegisterPage)
-router.route('/login').post(handleLogin).get(renderLoginPage)
-router.route('/blog').post(upload.single('image'),handleBlog).get(renderBlogPage)
+router.route("").get(errorHandler(renderHomePage))
+router.route('/register').post(errorHandler(handleRegister)).get(errorHandler(renderRegisterPage))
+router.route('/login').post(errorHandler(handleLogin)).get(renderLoginPage)
+router.route('/blog').post(upload.single('image'),errorHandler(handleBlog)).get(renderBlogPage)
 
 router.route('/forgotPassword').get(renderForgotPasswordPage).post(handleForgotPassword)
 router.route('/verifyOtp').get(renderOtpPage)
