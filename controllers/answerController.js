@@ -1,5 +1,5 @@
 const { where } = require("sequelize");
-const { answers, users } = require("../model");
+const { answers, users, questions } = require("../model");
 
 
 exports.handleAnswer= async(req,res)=>{
@@ -11,16 +11,16 @@ exports.handleAnswer= async(req,res)=>{
     const userId = req.userId; 
     console.log("userId",userId)
     if(!answerText){
-        res.status(400).json({
-            message: "please enter answer"
-        })
-        return
+       req.flash("error","Enter a answer text")
+       res.redirect(`/question/${questionId}`)
+       return
     }
     const answer = await answers.create({
         answerText,
         questionId,
         userId
     })
+    req.flash("success","Answer Posted Successfully")
     res.redirect(`/question/${questionId}`)
     // res.status(201).json({
     //     message: "answer created successfully",
@@ -54,16 +54,20 @@ exports.handleDelete = async(req,res)=>{
     try {
         const ansId = req.params.id
     const userId = req.userId
-    const data = await answers.destroy({
+    const ans = await answers.findOne({
+        where:{
+            id:ansId
+        }
+    })
+    const data = await questions.findByPk(ans.questionId)
+    await answers.destroy({
         where:{
             id: ansId,
             userId
         }
     })
-
-    res.status(200).json({
-        message: "answer deleted successfully"
-    })
+    req.flash("success","Deleted Successfully ")
+    res.redirect(`/question/${data.id}`)
         
     } catch (error) {
         res.status(500).json({

@@ -102,4 +102,19 @@ nav ul li a {
     font-weight: bold;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
+.msg{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    color: black;
+    height: 35px;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    padding: 7px;
+
+}
 

@@ -65,5 +65,7 @@ exports.renderQuestionDetailPage = async(req,res)=>{
         }
     ]
    })
-    res.render('question/questionDetail.ejs',{data,ans,loggedInName:req.userName});
+   const [success] = req.flash("success")
+   const [error] = req.flash("error")
+    res.render('question/questionDetail.ejs',{data,ans,loggedInName:req.userName,success,error});
 }

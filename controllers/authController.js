@@ -24,7 +24,9 @@ exports.renderHomePage = async(req,res)=>{
 
 //login 
 exports.renderLoginPage = (req,res)=>{
-    res.render("auth/login.ejs");
+    const [error] = req.flash('error');
+    const [success] = req.flash('success');
+    res.render("auth/login.ejs",{error,success});
 }
 
 //register 
@@ -39,7 +41,8 @@ exports.renderBlogPage = (req,res)=>{
 exports.handleLogin = async(req,res)=>{
     const {email,password} = req.body;
     if(!email || !password){
-        return res.send("please provide valid email and password");
+        req.flash("error","enter email and password")
+        return res.redirect("/login");
     }
     // check email
     const [data] = await users.findAll({
@@ -57,7 +60,8 @@ exports.handleLogin = async(req,res)=>{
             res.cookie("jwtToken",token)
             res.redirect("/");
             }else{
-                res.send("password is incorrect");
+                req.flash("error","password is incorrect");
+                return res.redirect("/login");
                 }
     }else{ 
         res.send("email not found");
@@ -68,6 +72,7 @@ exports.handleLogin = async(req,res)=>{
 //handle logout
 exports.handleLogout = (req,res)=>{
     res.clearCookie("jwtToken");
+    req.flash("success","logout successfully")
     res.redirect("/login");
     }
 //handle Register
@@ -88,7 +93,8 @@ exports.handleRegister = async(req,res)=>{
         text: `Dear ${username}
         you are new member of the project`
     })
-    res.status(200).render("auth/login.ejs");
+    req.flash('success',"Registered Successfully")
+    res.redirect("/login")
 
 }
 

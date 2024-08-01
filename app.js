@@ -9,6 +9,15 @@ const jwt = require("jsonwebtoken")
 // accessing database
 require("./model/index.js");
 
+const flash = require('connect-flash')
+const session = require("express-session")
+app.use(session({
+  secret: "aashishrijal",
+  resave: false,
+  saveUninitialized: false
+}))
+app.use(flash());
+
 //require the database table to perform database operation
 // const { blogs, users } = require("./model/index.js");
 
