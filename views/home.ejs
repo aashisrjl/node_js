@@ -9,8 +9,12 @@
 </head>
 <body>
     <%- include("components/navbar") %>
+    <%- include("components/messageBox") %>
 
     <div class="card-container">
+        <button>
+            <a href="/askquestion">Submit Question</a>
+        </button>
        <% data.forEach((item)=>{ %>
             <div class="card" onclick="location.href='/question/<%-item.id%>' ">
                 <h2><%- item.title  %></h2>
@@ -21,5 +25,6 @@
 
         <!-- Add more cards as needed -->
     </div>
+    <%- include("../services/TimeOut") %>
 </body>
 </html>

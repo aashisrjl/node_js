@@ -8,6 +8,8 @@
 </head>
 <body>
 <%- include("../components/navbar.ejs") %>
+<%- include("../components/messageBox.ejs") %>
+
 <form action="/register" method="POST">
     <h2 style="text-align: center; padding: 10px;">SignUp Form</h2>
     <input type="text" name="username" placeholder="Username" required>
@@ -17,5 +19,6 @@
     <input type="submit" value="Register">
 </form>
 
+<%- include("../../services/TimeOut") %>
 </body>
 </html>

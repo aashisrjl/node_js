@@ -9,16 +9,7 @@
 </head>
 <body>
     <%- include("../components/navbar",{loggedInName}) %>
-    <% if(error){ %>
-        <div style="background-Color:red" class="msg">
-         <p> <%- error %></p> 
-        </div>
-      <% } %>
-      <% if(success){ %>
-        <div style="background-Color:green" class="msg">
-          <p><%- success %></p> 
-        </div>
-      <% } %>
+   <%- include("../components/messageBox") %>
     <div class="card-container">
             <div class="card">
                 <div>
@@ -54,11 +45,7 @@
         
     </div>
    
-    <script>
-        const msgBox = document.querySelector(".msg");
-        setTimeout(() => {
-          msgBox.remove();
-          }, 3000);
-      </script>
+  <!-- <script src="../../services/TimeOut.js"></script> -->
+  <%- include("../../services/TimeOut.ejs") %>
 </body>
 </html>

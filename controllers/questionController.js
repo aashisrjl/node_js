@@ -2,7 +2,9 @@ const { questions, users, answers } = require("../model")
 
 //get question asking form
 exports.renderAskQuestionPage = (req,res)=>{
-    res.render('question/askQuestion.ejs')
+    const [error] = req.flash("error");
+    const [success] = req.flash("success");
+    res.render('question/askQuestion.ejs',{error,success})
 }
 
 // post question
@@ -19,7 +21,8 @@ exports.askQuestion=async (req,res)=>{
     const userId = req.userId
 
     if(!title || !description){
-        return res.send("enter title desc")
+        req.flash("error","Enter all fields")
+        res.redirect("/askquestion/");
     }
     await questions.create({
         title,
@@ -27,6 +30,7 @@ exports.askQuestion=async (req,res)=>{
         description,
         userId
     })
+    req.flash("success","Add Question Successfully")
     res.redirect("/")
 
 }

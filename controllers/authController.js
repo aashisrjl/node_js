@@ -18,8 +18,10 @@ exports.renderHomePage = async(req,res)=>{
             attributes: ["username"] // this defines the credential to pass the data to the frontend
         }]
      }
-    )// return array because it fins all 
-    res.render("home.ejs",{data:data});
+    )// return array because it find all 
+    const [error] = req.flash("error");
+    const [success] = req.flash("success")
+    res.render("home.ejs",{data,error,success});
 }
 
 //login 
@@ -31,7 +33,9 @@ exports.renderLoginPage = (req,res)=>{
 
 //register 
 exports.renderRegisterPage = (req,res)=>{
-    res.render('auth/Register.ejs');
+    const [error] = req.flash('error');
+    const [success] = req.flash('success');
+    res.render('auth/Register.ejs',{error,success});
 }
 //blog
 exports.renderBlogPage = (req,res)=>{
@@ -58,13 +62,15 @@ exports.handleLogin = async(req,res)=>{
                 expiresIn: "30d"
             })
             res.cookie("jwtToken",token)
+            req.flash("success","Login Successfully")
             res.redirect("/");
             }else{
                 req.flash("error","password is incorrect");
                 return res.redirect("/login");
                 }
     }else{ 
-        res.send("email not found");
+        req.flash("error","email is not valid")
+        res.redirect("/login")
 
     }
 
@@ -79,7 +85,9 @@ exports.handleLogout = (req,res)=>{
 exports.handleRegister = async(req,res)=>{
     const {username,email,password} = req.body;
     if(!username || !email || !password){
-        return res.send("please provide valid data");
+        req.flash("error","please enter all details")
+        res.redirect("/register")
+        return
         }
 
    await users.create({

@@ -9,16 +9,9 @@
 </head>
 <body>
 <%- include("../components/navbar.ejs") %>
-<% if(error){ %>
-  <div style="background-Color:red" class="msg">
-   <p> <%- error %></p> 
-  </div>
-<% } %>
-<% if(success){ %>
-  <div style="background-Color:green" class="msg">
-    <p><%- success %></p> 
-  </div>
-<% } %>
+<%- include("../components/messageBox.ejs") %>
+
+
 <form action="/login" method="post">
  
   <h2 style="text-align: center; padding: 10px;">Login Form</h2>
@@ -29,11 +22,7 @@
     <a style="margin-left: 80px;" href="/forgotPassword">Forgot password</a>
 </form>
 
-<script>
-  const msgBox = document.querySelector(".msg");
-  setTimeout(() => {
-    msgBox.remove();
-    }, 3000);
-</script>
+
+<%- include("../../services/TimeOut.ejs") %>
 </body>
 </html>

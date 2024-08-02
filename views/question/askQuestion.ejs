@@ -8,6 +8,7 @@
 </head>
 <body>
     <%- include("../components/navbar.ejs") %>
+    <%- include("../components/messageBox.ejs") %>
    <form action="/askquestion" method="POST" enctype="multipart/form-data">
     <h2 style="text-align: center; padding: 10px;">Ask questions </h2>
     <input type="text" name="title" placeholder="your question title..">
@@ -15,3 +16,7 @@
     <textarea type="textarea" cols="35" rows="10" name="description" placeholder="description..."></textarea>
     <input type="submit" value="ASK">
 </form>
+
+<%- include("../../services/TimeOut") %>
+</body>
+</html>

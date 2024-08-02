@@ -114,6 +114,8 @@ exports.handleEdit = async(req,res)=>{
 
                     }
                 })
+                req.flash("success","Edited Successfully")
                 res.redirect(`/question/${data[0].questionId}`)
+                
                 
 }
