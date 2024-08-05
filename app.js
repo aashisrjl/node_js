@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken")
 // accessing database
 require("./model/index.js");
 
+const socketio = require('socket.io');
 const flash = require('connect-flash')
 const session = require("express-session")
 app.use(session({
@@ -65,6 +66,7 @@ app.use(async (req,res,next)=>{
 const authRoute = require("./routes/authRoute");
 const questionRoute = require("./routes/questionRoute");
 const answerRoute = require("./routes/answerRoute");
+const { answers } = require("./model");
 app.use("",authRoute)
 app.use("",questionRoute)
 app.use("",answerRoute)
@@ -105,6 +107,24 @@ app.use(express.static('./storage/'));
 
 
 //allocate port number to the server 
-app.listen(port,()=>{
+const server = app.listen(port,()=>{
     console.log(`project has started at port ${port}`);
+})
+
+const io = socketio(server,{
+  cors:{
+    origin: "*"
+  }
+})
+
+io.on('connection',(socket)=>{
+  socket.on('like',async(id)=>{
+    const answer = await answers.findByPk(id);
+    if(answer){
+      answer.likes += 1;
+      await answer.save();
+
+      socket.emit('likeUpdate',answer.likes)
+    }
+  })
 })

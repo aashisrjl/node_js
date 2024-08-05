@@ -28,6 +28,10 @@
                         <div>
                         <i class="bold">Posted On: <%- new Date(answer.createdAt).toLocaleDateString() %></i>
                         <i class="ans-user bold">Answered By: <%- answer.user.username %></i>
+                        <br>
+                        <span id="likes"></span><button onclick="likePost(<%- answer.id%>)">
+                            <img height="20px" width="20px" src="/likee.svg" alt="">
+                        </button>
                         </div>
                        
                             <input class="delete_btn" type="button" onclick="location.href='/deleteAnswer/<%-answer.id%>' " value="delete">
@@ -44,7 +48,19 @@
             </div>
         
     </div>
-   
+    <script src="/socket.io/socket.io.js"></script>
+   <script>
+    const socket = io();
+    function likePost(id){
+        socket.emit('like',id);
+        console.log(id)
+
+    }
+    socket.on('likeUpdate',(likeCount)=>{
+        const likes = document.getElementById('likes')
+        likes.textContent = likeCount
+    })
+   </script>
   <!-- <script src="../../services/TimeOut.js"></script> -->
   <%- include("../../services/TimeOut.ejs") %>
 </body>
