@@ -66,38 +66,12 @@ app.use(async (req,res,next)=>{
 const authRoute = require("./routes/authRoute");
 const questionRoute = require("./routes/questionRoute");
 const answerRoute = require("./routes/answerRoute");
-const { answers } = require("./model");
+const { answers, sequelize, Sequelize } = require("./model");
+const { QueryTypes } = require("sequelize");
 app.use("",authRoute)
 app.use("",questionRoute)
 app.use("",answerRoute)
 
-// //HOME GET
-// app.get('/',renderHomePage)
-
-// //LOGIN GET
-// app.get('/login',renderLoginPage)
-
-// //LOGIN POST
-// app.post('/login',handleLogin)
-
-// //REGISTER GET
-// app.get('/register',renderRegisterPage)
-
-// // BLOG GET
-// app.get('/blog',renderBlogPage)
-
-// //REGISTER POST 
-// app.post('/register', handleRegister)
-
-// //BLOG POST 
-// app.post('/blog', upload.single('image'), handleBlog)
-
-// for question and answer portion
-// app.get('/askquestion',renderAskQuestionPage)
-// app.post('/askquestion',isAuthenticated,upload.single('image'),askQuestion)
-
-
-// app.get('/question/:id',renderQuestionDetailPage)
 
 //give access the css folder to the node js 
 app.use(express.static('public/css'));
@@ -118,13 +92,29 @@ const io = socketio(server,{
 })
 
 io.on('connection',(socket)=>{
-  socket.on('like',async(id)=>{
-    const answer = await answers.findByPk(id);
-    if(answer){
-      answer.likes += 1;
-      await answer.save();
+  socket.on('like',async({answerId,cookie})=>{
+    const answer = await answers.findByPk(answerId);
+    if(answer && cookie){
+      const decryptedResult = await promisify(jwt.verify)(cookie,"aashish")
+  
+      if(decryptedResult){
+        const user = await sequelize.query(`SELECT * FROM likes_${answerId} WHERE userId=${decryptedResult.id}`,{
+          type: QueryTypes.SELECT
+        })
 
-      socket.emit('likeUpdate',answer.likes)
+        if(user.length === 0){
+        await sequelize.query(`INSERT INTO likes_${answerId} (userId) VALUES (${decryptedResult.id})`,{
+          type:QueryTypes.INSERT
+        })
+      }
+
+      }
+      const likes = await sequelize.query(`SELECT * FROM likes_${answerId}`,{
+        type:QueryTypes.SELECT
+      })
+      const likesCount  = likes.length 
+
+      socket.emit('likeUpdate',{likesCount,answerId})
     }
   })
 })

@@ -29,7 +29,7 @@
                         <i class="bold">Posted On: <%- new Date(answer.createdAt).toLocaleDateString() %></i>
                         <i class="ans-user bold">Answered By: <%- answer.user.username %></i>
                         <br>
-                        <span id="likes"></span><button onclick="likePost(<%- answer.id%>)">
+                        <span id="likes_<%- answer.id %>"></span><button onclick="likePost(<%- answer.id%>)">
                             <img height="20px" width="20px" src="/likee.svg" alt="">
                         </button>
                         </div>
@@ -51,14 +51,17 @@
     <script src="/socket.io/socket.io.js"></script>
    <script>
     const socket = io();
-    function likePost(id){
-        socket.emit('like',id);
-        console.log(id)
-
+    const cookie = document.cookie.split('=')
+      function likePost(answerId){
+        socket.emit('like',{
+            answerId,
+            cookie: cookie[1]
+        });
     }
-    socket.on('likeUpdate',(likeCount)=>{
-        const likes = document.getElementById('likes')
-        likes.textContent = likeCount
+    
+    socket.on('likeUpdate',({likesCount,answerId})=>{
+        const likes = document.getElementById(`likes_${answerId}`)
+        likes.textContent = likesCount
     })
    </script>
   <!-- <script src="../../services/TimeOut.js"></script> -->

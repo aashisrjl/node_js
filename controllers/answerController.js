@@ -1,7 +1,8 @@
-const { where } = require("sequelize");
-const { answers, users, questions } = require("../model");
 
+const { QueryTypes } = require("sequelize");
+const { answers, users, questions,sequelize } = require("../model");
 
+//create answer
 exports.handleAnswer= async(req,res)=>{
 
     try {
@@ -15,16 +16,22 @@ exports.handleAnswer= async(req,res)=>{
        res.redirect(`/question/${questionId}`)
        return
     }
-    const answer = await answers.create({
+    const data= await answers.create({
         answerText,
         questionId,
         userId
     })
+    // query
+
+    await sequelize.query(`CREATE TABLE likes_${data.id} (
+        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        userId INT NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+        )`,{
+            type: QueryTypes.CREATE
+        })
+
     req.flash("success","Answer Posted Successfully")
     res.redirect(`/question/${questionId}`)
-    // res.status(201).json({
-    //     message: "answer created successfully",
-    //     })
         
     } catch (error) {
         res.status(500).json({
@@ -33,6 +40,8 @@ exports.handleAnswer= async(req,res)=>{
     }
     
 }
+
+//renderanswerpage
 exports.renderAnswerPage = async(req,res)=>{
     const userId= req.userId
     const id = req.params.id
@@ -50,6 +59,8 @@ exports.renderAnswerPage = async(req,res)=>{
     })
     res.render('component/answer.ejs',{data});
 }
+
+//delete asnwer
 exports.handleDelete = async(req,res)=>{
     try {
         const ansId = req.params.id
@@ -76,6 +87,7 @@ exports.handleDelete = async(req,res)=>{
     }
     
 }
+
 // edit answer page
 exports.renderEditPage = async(req,res)=>{
     const userId = req.userId
@@ -93,6 +105,7 @@ exports.renderEditPage = async(req,res)=>{
     
 }
 
+//handle answer edit
 exports.handleEdit = async(req,res)=>{
     const answerId = req.params.id
     const userId = req.userId
