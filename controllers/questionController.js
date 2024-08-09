@@ -69,6 +69,16 @@ exports.renderQuestionDetailPage = async(req,res)=>{
         }
     ]
    })
+
+//    // for accessing likes
+//    const like = await answers.findAll({
+//     where:{
+//         questionId:id,
+//         userId: req.userId
+//     }
+//    })
+//    const likes = like.likes
+//    console.log("likes",likes)
    const [success] = req.flash("success")
    const [error] = req.flash("error")
     res.render('question/questionDetail.ejs',{data,ans,loggedInName:req.userName,success,error});

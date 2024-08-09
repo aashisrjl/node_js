@@ -58,7 +58,7 @@
             cookie: cookie[1]
         });
     }
-    
+
     socket.on('likeUpdate',({likesCount,answerId})=>{
         const likes = document.getElementById(`likes_${answerId}`)
         likes.textContent = likesCount
