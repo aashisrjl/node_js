@@ -35,7 +35,7 @@ exports.renderLoginPage = (req,res)=>{
 exports.renderRegisterPage = (req,res)=>{
     const [error] = req.flash('error');
     const [success] = req.flash('success');
-    res.render('auth/Register.ejs',{error,success});
+    res.render("auth/Register.ejs",{error,success});
 }
 //blog
 exports.renderBlogPage = (req,res)=>{
