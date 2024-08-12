@@ -15,12 +15,14 @@ exports.askQuestion=async (req,res)=>{
     console.log(req.body)
     let fileName;
     let result;
+    let file;
     if(req.file){
      fileName = req.file.filename
      result = await cloudinary.v2.uploader.upload(req.file.path)
+     file = result.url
     }else{
         fileName = ""
-        result.url = ""
+        file = ""
     }
    
     console.log(result)
@@ -32,7 +34,7 @@ exports.askQuestion=async (req,res)=>{
     }
     await questions.create({
         title,
-        image:result.url,
+        image:file,
         description,
         userId
     })
