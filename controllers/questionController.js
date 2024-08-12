@@ -1,4 +1,6 @@
-const { questions, users, answers } = require("../model")
+const { QueryTypes } = require("sequelize");
+const { questions, users, answers, sequelize } = require("../model")
+const {cloudinary} = require('../cloudinary/index')
 
 //get question asking form
 exports.renderAskQuestionPage = (req,res)=>{
@@ -18,6 +20,8 @@ exports.askQuestion=async (req,res)=>{
         fileName = ""
     }
     console.log(req.file)
+    const result = await cloudinary.v2.uploader.upload(req.file.path)
+    console.log(result)
     const userId = req.userId
 
     if(!title || !description){
@@ -26,7 +30,7 @@ exports.askQuestion=async (req,res)=>{
     }
     await questions.create({
         title,
-        image:fileName,
+        image:result.url,
         description,
         userId
     })
@@ -59,6 +63,20 @@ exports.renderQuestionDetailPage = async(req,res)=>{
             }
         ]
     })
+let likes;
+let count = 0;
+    try {
+        likes = await sequelize.query(`SELECT * FROM LIKES_${id}`,{
+            type: QueryTypes.SELECT
+        })
+        if(likes.length > 0){
+            count = likes.length
+        }
+        
+    } catch (error) {
+        console.log(error)
+    }
+
    const ans = await answers.findAll({
     where:{
         questionId:id
@@ -69,17 +87,19 @@ exports.renderQuestionDetailPage = async(req,res)=>{
         }
     ]
    })
+   
 
-//    // for accessing likes
-//    const like = await answers.findAll({
-//     where:{
-//         questionId:id,
-//         userId: req.userId
-//     }
-//    })
+   // for accessing likes
+   const like = await answers.findAll({
+    where:{
+        questionId:id,
+        userId: req.userId
+    }
+   })
+
 //    const likes = like.likes
 //    console.log("likes",likes)
    const [success] = req.flash("success")
    const [error] = req.flash("error")
-    res.render('question/questionDetail.ejs',{data,ans,loggedInName:req.userName,success,error});
+    res.render('question/questionDetail.ejs',{data,ans,success,error,likes:count});
 }

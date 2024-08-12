@@ -216,3 +216,7 @@ exports.handleBlog = async(req,res)=>{
         res.redirect("/login");
 
     }
+
+    exports.renderProfilePage = (req,res)=>{
+        res.render("components/userProfile.ejs")
+    }

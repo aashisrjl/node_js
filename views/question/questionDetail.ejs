@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="/home.css">
 </head>
 <body>
-    <%- include("../components/navbar",{loggedInName}) %>
+    <%- include("../components/navbar") %>
    <%- include("../components/messageBox") %>
     <div class="card-container">
             <div class="card">
                 <div>
-                    <img src="http://localhost:3000/<%-data[0].image%>" alt="" height="300px" width="700px">
+                    <img src="<%-data[0].image%>" alt="" height="300px" width="700px">
                 </div>
                 <h1>Title: <%- data[0].title %></h1>
                 <h3>Description: <%- data[0].description %></h3>
@@ -29,7 +29,7 @@
                         <i class="bold">Posted On: <%- new Date(answer.createdAt).toLocaleDateString() %></i>
                         <i class="ans-user bold">Answered By: <%- answer.user.username %></i>
                         <br>
-                        <span id="likes_<%- answer.id %>"></span><button onclick="likePost(<%- answer.id%>)">
+                        <span id="likes_<%- answer.id %>"><%- answer.likes %></span><button onclick="likePost(<%- answer.id%>)">
                             <img height="20px" width="20px" src="/likee.svg" alt="">
                         </button>
                         </div>

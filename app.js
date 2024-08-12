@@ -50,6 +50,8 @@ app.use(async (req,res,next)=>{
     const token =  req.cookies.jwtToken 
    try {
      const decryptedResult =  await promisify(jwt.verify)(token,'aashish')
+     const data = await users.findByPk(decryptedResult.id)
+     res.locals.userName = data.username 
      if(decryptedResult){
          res.locals.isAuthenticated = true 
      }else{
@@ -66,7 +68,7 @@ app.use(async (req,res,next)=>{
 const authRoute = require("./routes/authRoute");
 const questionRoute = require("./routes/questionRoute");
 const answerRoute = require("./routes/answerRoute");
-const { answers, sequelize, Sequelize } = require("./model");
+const { answers, sequelize, Sequelize, users } = require("./model");
 const { QueryTypes } = require("sequelize");
 app.use("",authRoute)
 app.use("",questionRoute)
@@ -113,7 +115,13 @@ io.on('connection',(socket)=>{
         type:QueryTypes.SELECT
       })
       const likesCount  = likes.length 
+      await answers.update({
+        likes: likesCount
+      },{
+      where:{
+        id:answerId
 
+    }})
       socket.emit('likeUpdate',{likesCount,answerId})
     }
   })

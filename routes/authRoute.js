@@ -1,4 +1,4 @@
-const { renderLoginPage, renderBlogPage, renderRegisterPage, handleRegister, handleLogin, handleBlog, renderHomePage, renderForgotPasswordPage, handleForgotPassword, renderOtpPage, handleVerifyOtp, renderResetPasswordPage, handleResetPassword, handleLogout } = require('../controllers/authController')
+const { renderLoginPage, renderBlogPage, renderRegisterPage, handleRegister, handleLogin, handleBlog, renderHomePage, renderForgotPasswordPage, handleForgotPassword, renderOtpPage, handleVerifyOtp, renderResetPasswordPage, handleResetPassword, handleLogout, renderProfilePage } = require('../controllers/authController')
 
 const router = require('express').Router()
 // setup for file upload in the database
@@ -21,4 +21,5 @@ router.route('/resetPassword').get(renderResetPasswordPage)
 router.route('/resetPassword/:email/:otp').post(handleResetPassword)
 
 router.route('/logout').get(handleLogout)
+router.route('/profile').get(renderProfilePage)
 module.exports = router
