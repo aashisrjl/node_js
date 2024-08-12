@@ -1,6 +1,7 @@
 const { QueryTypes } = require("sequelize");
 const { questions, users, answers, sequelize } = require("../model")
 const {cloudinary} = require('../cloudinary/index')
+const fs = require('fs')
 
 //get question asking form
 exports.renderAskQuestionPage = (req,res)=>{
@@ -107,3 +108,77 @@ let count = 0;
    const [error] = req.flash("error")
     res.render('question/questionDetail.ejs',{data,ans,success,error,likes:count});
 }
+
+exports.renderQuestionEditPage = async(req,res)=>{
+    const {id} = req.params
+    const [data] = await questions.findAll({
+        where:{
+            id:id
+        }
+        })
+        const [error] = req.flash('error')
+        const [success] = req.flash('success')
+        res.render('question/editQuestion.ejs',{error,success,data});
+}
+exports.handleQuestionDelete = async(req,res)=>{
+    const {id} = req.params
+    const userId = req.userId
+    const que = await questions.findAll({
+        where:{
+            id:id
+        }
+    })
+    console.log("uesrID",que[0].userId)
+    if(que.length === 0){
+        req.flash('error','no questions')
+        res.redirect(`/question/${id}`)
+    }
+    if(userId == que[0].userId){
+        const deleted = await questions.destroy({
+            where:{
+                id:id
+            }
+            })
+            req.flash('success','question deleted')
+            res.redirect(`/`)
+    }else{
+        req.flash('error','you dont have permission')
+        res.redirect(`/question/${id}`)
+    }
+}
+exports.handleEditQuestion = async (req, res) => {
+    const id = req.params.id;
+    const userId = req.userId;
+    const { title, description } = req.body;
+
+    try {
+        
+        const question = await questions.findOne({
+            where: { id, userId }
+        });
+
+        if (question) {
+            
+            const filename = req.file ? req.file.filename : question.image;
+
+            
+            await questions.update(
+                {
+                    title: title || question.title,
+                    description: description || question.description,
+                    image: filename
+                },
+                { where: { id } }
+            );
+
+            req.flash("success", "Edited Successfully");
+        } else {
+            req.flash("error", "You don't have permission to edit this question");
+        }
+    } catch (error) {
+        console.error("Error updating question:", error);
+        req.flash("error", "An error occurred while updating the question");
+    }
+
+    res.redirect(`/question/${id}`);
+};

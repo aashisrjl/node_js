@@ -18,7 +18,11 @@
                 <h1>Title: <%- data[0].title %></h1>
                 <h3>Description: <%- data[0].description %></h3>
                 <p>Author :<%- data[0].user.username %> </p><br>
-                <i>Posted On: <%- new Date(data[0].createdAt).toLocaleDateString() %></i>
+                <i>Posted On: <%- new Date(data[0].createdAt).toLocaleDateString() %></i><br>
+                <a href="/question/delete/<%- data[0].id %>"> <button>Delete</button>  </a>
+                <a href="/question/edit/<%- data[0].id %>"> <button>Edit</button> </a>
+                
+
             </div>
             <div class="answer">
                 <% ans.forEach((answer)=>{%>

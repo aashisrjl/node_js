@@ -6,7 +6,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   operatorsAliases: false,
-  port : 21661,  // add 3306 for tye internal localhost
+  port : 3306, //21661,  // add 3306 for tye internal localhost
 
   pool: {
     max: dbConfig.pool.max,
