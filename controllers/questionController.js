@@ -14,13 +14,15 @@ exports.askQuestion=async (req,res)=>{
     const {title,description} = req.body
     console.log(req.body)
     let fileName;
+    let result;
     if(req.file){
      fileName = req.file.filename
+     result = await cloudinary.v2.uploader.upload(req.file.path)
     }else{
         fileName = ""
+        result.url = ""
     }
-    console.log(req.file)
-    const result = await cloudinary.v2.uploader.upload(req.file.path)
+   
     console.log(result)
     const userId = req.userId
 
