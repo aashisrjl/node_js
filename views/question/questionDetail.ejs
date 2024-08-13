@@ -19,8 +19,8 @@
                 <h3>Description: <%- data[0].description %></h3>
                 <p>Author :<%- data[0].user.username %> </p><br>
                 <i>Posted On: <%- new Date(data[0].createdAt).toLocaleDateString() %></i><br>
-                <a href="/question/delete/<%- data[0].id %>"> <button>Delete</button>  </a>
-                <a href="/question/edit/<%- data[0].id %>"> <button>Edit</button> </a>
+                <a href="/question/delete/<%- data[0].id %>"> <button  class="delete_btn">Delete</button>  </a>
+                <a  href="/question/edit/<%- data[0].id %>"> <button class="edit_btn">Edit</button> </a>
                 
 
             </div>

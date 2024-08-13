@@ -1,6 +1,6 @@
 
 const { QueryTypes } = require("sequelize");
-const { answers, users, questions,sequelize } = require("../model");
+const { answers, users, questions,sequelize, Sequelize } = require("../model");
 
 //create answer
 exports.handleAnswer= async(req,res)=>{
@@ -77,8 +77,13 @@ exports.handleDelete = async(req,res)=>{
             userId
         }
     })
+    sequelize.query(`DROP TABLE likes_${ansId}`,{
+        type: QueryTypes.DROP
+    })
     req.flash("success","Deleted Successfully ")
     res.redirect(`/question/${data.id}`)
+
+   
         
     } catch (error) {
         res.status(500).json({
