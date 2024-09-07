@@ -128,7 +128,7 @@ exports.handleQuestionDelete = async(req,res)=>{
             id:id
         }
     })
-    console.log("uesrID",que[0].userId)
+    console.log("userID",que[0].userId)
     if(que.length === 0){
         req.flash('error','no questions')
         res.redirect(`/question/${id}`)
